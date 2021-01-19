@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title></title>
+    <script src="https://unpkg.com/stimulus@2.0.0/dist/stimulus.umd.js"></script>
+    <script>
+      (() => {
+        const application = Stimulus.Application.start();
+
+        application.register(
+          'sentence',
+          class extends Stimulus.Controller {
+            static get targets() {
+              return ['text'];
+            }
+
+            initialize() {
+              this.textTarget.textContent = this.preppedText;
+            }
+
+            rawText =
+              'When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton';
+            preppedText = this.rawText
+              .split(' ')
+              .map((word, index) => {
+                return `<span id='${index}'>${word} </span>`;
+              })
+              .join('');
+            isShown = true;
+            currentWordPosition = 0;
+
+            flipSentence() {
+              if (this.isShown) {
+                this.textTarget.textContent = 'hello';
+              } else {
+                this.textTarget.innerHTML = this.preppedText;
+              }
+              this.isShown = !this.isShown;
+            }
+          },
+        );
+      })();
+    </script>
+  </head>
+  <body>
+    <section data-controller="sentence">
+      <p data-sentence-target="text"></p>
+      <button data-action="click->sentence#flipSentence">Flip sentence</button>
+    </section>
+  </body>
+</html>
