@@ -8,20 +8,19 @@
         return ['text']
       }
       initialize() {
-        this.buildWordsData(false)
-        this.textTarget.innerHTML = this.text
+        this.buildWords(false)
       }
 
       rawText =
         'When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton.'
-      wordsData = []
+      words = []
 
-      buildWordsData(wordsAreShown) {
-        this.wordsData = []
-        this.rawText.split(' ').map((word, position) => {
-          this.wordsData = [
-            ...this.wordsData,
-            { word, position, isShown: wordsAreShown },
+      buildWords(wordsAreShown) {
+        this.words = []
+        this.rawText.split(' ').map((text, position) => {
+          this.words = [
+            ...this.words,
+            { text, position, isShown: wordsAreShown },
           ]
         })
         this.buildText()
@@ -31,9 +30,9 @@
       text = ''
       buildText() {
         this.text = ''
-        this.wordsData.map(({ word, position, isShown }) => {
+        this.words.map(({ text, position, isShown }) => {
           this.text += `<span id="${position}" data-action="click->sentence#flipWord">${
-            isShown ? word : '____'
+            isShown ? text : '____'
           }</span> `
         })
         this.textTarget.innerHTML = this.text
@@ -41,16 +40,32 @@
 
       flipSentence() {
         if (this.allWordsAreShown) {
-          this.buildWordsData(false)
+          this.buildWords(false)
           this.allWordsAreShown = false
         } else {
-          this.buildWordsData(true)
+          this.buildWords(true)
           this.allWordsAreShown = true
         }
       }
 
       flipWord(event) {
-        wordPosition = event.target.id
+        const wordPosition = Number(event.target.id)
+        this.words = this.words.map(({ text, position, isShown }) => {
+          if (position === wordPosition) {
+            return {
+              text,
+              position,
+              isShown: !isShown,
+            }
+          } else {
+            return {
+              text,
+              position,
+              isShown,
+            }
+          }
+        })
+        this.buildText()
       }
     },
   )
