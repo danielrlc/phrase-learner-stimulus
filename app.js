@@ -14,29 +14,29 @@
       rawText =
         'When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton.'
       words = []
-
-      buildWords(wordsAreShown) {
-        this.words = []
-        this.rawText.split(' ').map((text, position) => {
-          this.words = [
-            ...this.words,
-            { text, position, isShown: wordsAreShown },
-          ]
-        })
-        this.buildText()
-      }
+      text = ''
       allWordsAreShown = false
-      hintsAreShown = false
+      hintsAreShown = true
       wordLengthHintsAreShown = true
 
-      text = ''
-      buildText() {
+      buildWords(allWordsAreShownLocal) {
+        this.words = []
+        this.rawText.split(' ').map((word, position) => {
+          this.words = [
+            ...this.words,
+            { word, position, wordIsShown: allWordsAreShownLocal },
+          ]
+        })
+        this.renderText()
+      }
+
+      renderText() {
         this.text = ''
-        this.words.map(({ text, position, isShown }) => {
+        this.words.map(({ word, position, wordIsShown }) => {
           let hint = ''
           let blank = ''
           if (this.wordLengthHintsAreShown) {
-            text.split('').map((letter, position) => {
+            word.split('').map((letter, position) => {
               if (position === 0) {
                 hint += letter
                 blank += '_'
@@ -46,11 +46,11 @@
               }
             })
           } else {
-            hint += `${text[0]}___`
+            hint += `${word[0]}___`
             blank += '____'
           }
           this.text += `<span id="${position}" data-action="click->sentence#flipWord">${
-            isShown ? text : this.hintsAreShown ? hint : blank
+            wordIsShown ? word : this.hintsAreShown ? hint : blank
           }</span> `
         })
         this.textTarget.innerHTML = this.text
@@ -68,32 +68,32 @@
 
       flipWord(event) {
         const wordPosition = Number(event.target.id)
-        this.words = this.words.map(({ text, position, isShown }) => {
+        this.words = this.words.map(({ word, position, wordIsShown }) => {
           if (position === wordPosition) {
             return {
-              text,
+              word,
               position,
-              isShown: !isShown,
+              wordIsShown: !wordIsShown,
             }
           } else {
             return {
-              text,
+              word,
               position,
-              isShown,
+              wordIsShown,
             }
           }
         })
-        this.buildText()
+        this.renderText()
       }
 
       flipHints() {
         this.hintsAreShown = !this.hintsAreShown
-        this.buildText()
+        this.renderText()
       }
 
       flipWordLengthHints() {
         this.wordLengthHintsAreShown = !this.wordLengthHintsAreShown
-        this.buildText()
+        this.renderText()
       }
     },
   )
