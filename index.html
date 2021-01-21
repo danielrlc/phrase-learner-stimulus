@@ -17,18 +17,20 @@
     <p class="font-bold text-center mb-4">The English Club</p>
     <section data-controller="sentence">
       <p class="mb-6" data-sentence-target="text"></p>
-      <button
-        class="text-base px-4 py-1 bg-gray-400 rounded"
-        data-action="click->sentence#flipSentence"
-      >
-        flip sentence
-      </button>
-      <button
-        class="text-base px-4 py-1 bg-gray-400 rounded"
-        data-action="click->sentence#flipHints"
-      >
-        flip hints
-      </button>
+      <div class="-mx-1">
+        <button
+          class="text-sm px-4 py-1 mx-1 bg-gray-200 hover:bg-gray-300 rounded"
+          data-action="click->sentence#flipSentence"
+        >
+          flip sentence
+        </button>
+        <button
+          class="text-sm px-4 py-1 mx-1 bg-gray-200 hover:bg-gray-300 rounded"
+          data-action="click->sentence#flipHints"
+        >
+          flip hints
+        </button>
+      </div>
     </section>
   </body>
 </html>
