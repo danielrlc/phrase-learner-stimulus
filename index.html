@@ -20,7 +20,7 @@
             }
 
             rawText =
-              'When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton';
+              'When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton.';
             wordsData = [];
 
             buildWordsData(wordsAreShown) {
@@ -39,7 +39,7 @@
             buildText() {
               this.text = '';
               this.wordsData.map(({ word, position, isShown }) => {
-                this.text += `<span data-action="click->sentence#flipWord(${position})">${
+                this.text += `<span id="${position}" data-action="click->sentence#flipWord">${
                   isShown ? word : '____'
                 }</span> `;
               });
@@ -54,6 +54,10 @@
                 this.buildWordsData(true);
                 this.allWordsAreShown = true;
               }
+            }
+
+            flipWord(event) {
+              console.log(event.target.id);
             }
           },
         );
