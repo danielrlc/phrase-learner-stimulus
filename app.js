@@ -31,8 +31,16 @@
       buildText() {
         this.text = ''
         this.words.map(({ text, position, isShown }) => {
+          let hint = ''
+          text.split('').map((letter, position) => {
+            if (position === 0) {
+              hint += letter
+            } else {
+              hint += '_'
+            }
+          })
           this.text += `<span id="${position}" data-action="click->sentence#flipWord">${
-            isShown ? text : '____'
+            isShown ? text : hint
           }</span> `
         })
         this.textTarget.innerHTML = this.text

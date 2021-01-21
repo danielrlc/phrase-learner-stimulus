@@ -2,14 +2,27 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The English Club</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
     <script src="https://unpkg.com/stimulus@2.0.0/dist/stimulus.umd.js"></script>
     <script src="app.js"></script>
   </head>
-  <body>
+  <body
+    class="font-mono px-4 lg:px-0 py-1 max-w-2xl mx-auto text-lg lg:text-xl"
+  >
+    <p class="font-bold text-center mb-4">The English Club</p>
     <section data-controller="sentence">
-      <p data-sentence-target="text"></p>
-      <button data-action="click->sentence#flipSentence">Flip sentence</button>
+      <p class="mb-6" data-sentence-target="text"></p>
+      <button
+        class="text-base px-4 py-1 bg-gray-400 rounded"
+        data-action="click->sentence#flipSentence"
+      >
+        flip
+      </button>
     </section>
   </body>
 </html>
