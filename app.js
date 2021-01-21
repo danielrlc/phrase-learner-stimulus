@@ -17,7 +17,6 @@
       text = ''
       allWordsAreShown = false
       hintsAreShown = true
-      wordLengthHintsAreShown = true
 
       buildWords(allWordsAreShownLocal) {
         this.words = []
@@ -35,7 +34,7 @@
         this.words.map(({ word, position, wordIsShown }) => {
           let hint = ''
           let blank = ''
-          if (this.wordLengthHintsAreShown) {
+          if (this.hintsAreShown) {
             word.split('').map((letter, position) => {
               if (position === 0) {
                 hint += letter
@@ -88,11 +87,6 @@
 
       flipHints() {
         this.hintsAreShown = !this.hintsAreShown
-        this.renderText()
-      }
-
-      flipWordLengthHints() {
-        this.wordLengthHintsAreShown = !this.wordLengthHintsAreShown
         this.renderText()
       }
     },
