@@ -26,21 +26,25 @@
         this.buildText()
       }
       allWordsAreShown = false
+      hintsAreShown = false
 
       text = ''
       buildText() {
         this.text = ''
         this.words.map(({ text, position, isShown }) => {
           let hint = ''
+          let blank = ''
           text.split('').map((letter, position) => {
             if (position === 0) {
               hint += letter
+              blank += '_'
             } else {
               hint += '_'
+              blank += '_'
             }
           })
           this.text += `<span id="${position}" data-action="click->sentence#flipWord">${
-            isShown ? text : hint
+            isShown ? text : this.hintsAreShown ? hint : blank
           }</span> `
         })
         this.textTarget.innerHTML = this.text
@@ -73,6 +77,11 @@
             }
           }
         })
+        this.buildText()
+      }
+
+      flipHints() {
+        this.hintsAreShown = !this.hintsAreShown
         this.buildText()
       }
     },
