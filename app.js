@@ -27,6 +27,7 @@
       }
       allWordsAreShown = false
       hintsAreShown = false
+      wordLengthHintsAreShown = true
 
       text = ''
       buildText() {
@@ -34,15 +35,20 @@
         this.words.map(({ text, position, isShown }) => {
           let hint = ''
           let blank = ''
-          text.split('').map((letter, position) => {
-            if (position === 0) {
-              hint += letter
-              blank += '_'
-            } else {
-              hint += '_'
-              blank += '_'
-            }
-          })
+          if (this.wordLengthHintsAreShown) {
+            text.split('').map((letter, position) => {
+              if (position === 0) {
+                hint += letter
+                blank += '_'
+              } else {
+                hint += '_'
+                blank += '_'
+              }
+            })
+          } else {
+            hint += `${text[0]}___`
+            blank += '____'
+          }
           this.text += `<span id="${position}" data-action="click->sentence#flipWord">${
             isShown ? text : this.hintsAreShown ? hint : blank
           }</span> `
@@ -82,6 +88,11 @@
 
       flipHints() {
         this.hintsAreShown = !this.hintsAreShown
+        this.buildText()
+      }
+
+      flipWordLengthHints() {
+        this.wordLengthHintsAreShown = !this.wordLengthHintsAreShown
         this.buildText()
       }
     },
