@@ -16,9 +16,9 @@
       }
 
       rawText =
-        'When Mr. Bilbo Baggins of Bag End announced that he would shortly be celebrating his eleventy-first birthday with a party of special magnificence, there was much talk and excitement in Hobbiton.'
+        'Mr and Mrs Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much.'
       words = []
-      text = ''
+      renderedText = ''
       allWordsAreShown = false
       hintsAreShown = true
 
@@ -43,7 +43,7 @@
       }
 
       renderText() {
-        this.text = ''
+        this.renderedText = ''
         this.words.map(({ word, position, wordIsShown }) => {
           let hint = ''
           let blank = ''
@@ -61,11 +61,11 @@
             hint += `${word[0]}___`
             blank += '____'
           }
-          this.text += `<span id="${position}" data-action="click->sentence#flipWord">${
+          this.renderedText += `<span id="${position}" data-action="click->sentence#flipWord">${
             wordIsShown ? word : this.hintsAreShown ? hint : blank
           }</span> `
         })
-        this.textTarget.innerHTML = this.text
+        this.textTarget.innerHTML = this.renderedText
       }
 
       flipSentence() {
