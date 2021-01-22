@@ -9,21 +9,16 @@
       }
 
       initialize() {
-        this.showOrHideAllWords(this.HIDE_ALL_WORDS)
+        this.buildTextWords()
       }
 
-      SHOW_ALL_WORDS = 'showAllWords'
-      HIDE_ALL_WORDS = 'hideAllWords'
-      rawText =
-        'The small boys came early to the hanging.'
+      rawText = 'The small boys came early to the hanging.'
       renderedText = ''
       textWords = []
       allWordsAreShown = false
       hintsAreShown = true
 
-      showOrHideAllWords(showOrHide) {
-        this.allWordsAreShown =
-          showOrHide === this.SHOW_ALL_WORDS ? true : false
+      buildTextWords() {
         this.textWords = []
         this.rawText.split(' ').map((word, position) => {
           this.textWords = [
@@ -60,12 +55,9 @@
         this.textTarget.innerHTML = this.renderedText
       }
 
-      flipSentence() {
-        if (this.allWordsAreShown) {
-          this.showOrHideAllWords(this.HIDE_ALL_WORDS)
-        } else {
-          this.showOrHideAllWords(this.SHOW_ALL_WORDS)
-        }
+      flipTextWords() {
+        this.allWordsAreShown = !this.allWordsAreShown
+        this.buildTextWords()
       }
 
       flipWord(event) {
