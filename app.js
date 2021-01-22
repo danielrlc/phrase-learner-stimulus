@@ -7,8 +7,12 @@
       static get targets() {
         return ['text']
       }
+
+      showAllWords = "showAllWords"
+      hideAllWords = "hideAllWords"
+
       initialize() {
-        this.buildWords(false)
+        this.showOrHideAllWords(this.hideAllWords)
       }
 
       rawText =
@@ -18,12 +22,21 @@
       allWordsAreShown = false
       hintsAreShown = true
 
-      buildWords(allWordsAreShownLocal) {
+      areAllWordsShown() {
+        if (this.words.map((word) => word.wordIsShown).every(true)) {
+          this.allWordsAreShown = true
+        } else {
+          this.allWordsAreShown = false
+        }
+      }
+
+      showOrHideAllWords(showOrHide) {
+        this.allWordsAreShown = showOrHide === this.showAllWords ? true : false
         this.words = []
         this.rawText.split(' ').map((word, position) => {
           this.words = [
             ...this.words,
-            { word, position, wordIsShown: allWordsAreShownLocal },
+            { word, position, wordIsShown: this.allWordsAreShown },
           ]
         })
         this.renderText()
@@ -57,11 +70,9 @@
 
       flipSentence() {
         if (this.allWordsAreShown) {
-          this.buildWords(false)
-          this.allWordsAreShown = false
+          this.showOrHideAllWords(this.hideAllWords)
         } else {
-          this.buildWords(true)
-          this.allWordsAreShown = true
+          this.showOrHideAllWords(this.showAllWords)
         }
       }
 
