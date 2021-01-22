@@ -9,7 +9,7 @@
       }
 
       initialize() {
-        this.buildTextWords()
+        this.buildInitialTextWords()
       }
 
       rawText = 'The small boys came early to the hanging.'
@@ -18,15 +18,8 @@
       allWordsAreShown = false
       hintsAreShown = true
 
-      buildTextWords() {
-        this.textWords = []
-        this.rawText.split(' ').map((word, position) => {
-          this.textWords = [
-            ...this.textWords,
-            { word, position, wordIsShown: this.allWordsAreShown },
-          ]
-        })
-        this.renderText()
+      buildInitialTextWords() {
+        this.buildTextWordsAfterAllWordsFlipped()
       }
 
       renderText() {
@@ -57,14 +50,30 @@
 
       flipTextWords() {
         this.allWordsAreShown = !this.allWordsAreShown
-        this.buildTextWords()
+        this.buildTextWordsAfterAllWordsFlipped()
+      }
+
+      buildTextWordsAfterAllWordsFlipped() {
+        this.textWords = []
+        this.rawText.split(' ').map((word, position) => {
+          this.textWords = this.textWords.concat({
+            word,
+            position,
+            wordIsShown: this.allWordsAreShown,
+          })
+        })
+        this.renderText()
       }
 
       flipWord(event) {
         const wordPosition = Number(event.target.id)
+        this.buildTextWordsAfterOneWordFlipped(wordPosition)
+      }
+
+      buildTextWordsAfterOneWordFlipped(flippedWordPosition) {
         this.textWords = this.textWords.map(
           ({ word, position, wordIsShown }) => {
-            if (position === wordPosition) {
+            if (position === flippedWordPosition) {
               return {
                 word,
                 position,
