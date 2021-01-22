@@ -9,7 +9,7 @@
       }
 
       initialize() {
-        this.buildInitialTextWords()
+        this.buildText()
       }
 
       rawText = 'The small boys came early to the hanging.'
@@ -17,10 +17,6 @@
       textWords = []
       allWordsAreShown = false
       hintsAreShown = true
-
-      buildInitialTextWords() {
-        this.buildTextWordsAfterAllWordsFlipped()
-      }
 
       renderText() {
         this.renderedText = ''
@@ -41,19 +37,19 @@
             hint += `${word[0]}___`
             blank += '____'
           }
-          this.renderedText += `<span id="${position}" data-action="click->sentence#flipWord">${
+          this.renderedText += `<span id="${position}" data-action="click->sentence#flipWordAndBuildText">${
             wordIsShown ? word : this.hintsAreShown ? hint : blank
           }</span> `
         })
         this.textTarget.innerHTML = this.renderedText
       }
 
-      flipTextWords() {
+      flipAllWords() {
         this.allWordsAreShown = !this.allWordsAreShown
-        this.buildTextWordsAfterAllWordsFlipped()
+        this.buildText()
       }
 
-      buildTextWordsAfterAllWordsFlipped() {
+      buildText() {
         this.textWords = []
         this.rawText.split(' ').map((word, position) => {
           this.textWords = this.textWords.concat({
@@ -65,15 +61,11 @@
         this.renderText()
       }
 
-      flipWord(event) {
+      flipWordAndBuildText(event) {
         const wordPosition = Number(event.target.id)
-        this.buildTextWordsAfterOneWordFlipped(wordPosition)
-      }
-
-      buildTextWordsAfterOneWordFlipped(flippedWordPosition) {
         this.textWords = this.textWords.map(
           ({ word, position, wordIsShown }) => {
-            if (position === flippedWordPosition) {
+            if (position === wordPosition) {
               return {
                 word,
                 position,
