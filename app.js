@@ -8,34 +8,26 @@
         return ['text']
       }
 
-      showAllWords = "showAllWords"
-      hideAllWords = "hideAllWords"
-
       initialize() {
-        this.showOrHideAllWords(this.hideAllWords)
+        this.showOrHideAllWords(this.HIDE_ALL_WORDS)
       }
 
+      SHOW_ALL_WORDS = 'showAllWords'
+      HIDE_ALL_WORDS = 'hideAllWords'
       rawText =
-        'Mr and Mrs Dursley, of number four, Privet Drive, were proud to say that they were perfectly normal, thank you very much.'
-      words = []
+        'The small boys came early to the hanging.'
       renderedText = ''
+      textWords = []
       allWordsAreShown = false
       hintsAreShown = true
 
-      areAllWordsShown() {
-        if (this.words.map((word) => word.wordIsShown).every(true)) {
-          this.allWordsAreShown = true
-        } else {
-          this.allWordsAreShown = false
-        }
-      }
-
       showOrHideAllWords(showOrHide) {
-        this.allWordsAreShown = showOrHide === this.showAllWords ? true : false
-        this.words = []
+        this.allWordsAreShown =
+          showOrHide === this.SHOW_ALL_WORDS ? true : false
+        this.textWords = []
         this.rawText.split(' ').map((word, position) => {
-          this.words = [
-            ...this.words,
+          this.textWords = [
+            ...this.textWords,
             { word, position, wordIsShown: this.allWordsAreShown },
           ]
         })
@@ -44,7 +36,7 @@
 
       renderText() {
         this.renderedText = ''
-        this.words.map(({ word, position, wordIsShown }) => {
+        this.textWords.map(({ word, position, wordIsShown }) => {
           let hint = ''
           let blank = ''
           if (this.hintsAreShown) {
@@ -70,29 +62,31 @@
 
       flipSentence() {
         if (this.allWordsAreShown) {
-          this.showOrHideAllWords(this.hideAllWords)
+          this.showOrHideAllWords(this.HIDE_ALL_WORDS)
         } else {
-          this.showOrHideAllWords(this.showAllWords)
+          this.showOrHideAllWords(this.SHOW_ALL_WORDS)
         }
       }
 
       flipWord(event) {
         const wordPosition = Number(event.target.id)
-        this.words = this.words.map(({ word, position, wordIsShown }) => {
-          if (position === wordPosition) {
-            return {
-              word,
-              position,
-              wordIsShown: !wordIsShown,
+        this.textWords = this.textWords.map(
+          ({ word, position, wordIsShown }) => {
+            if (position === wordPosition) {
+              return {
+                word,
+                position,
+                wordIsShown: !wordIsShown,
+              }
+            } else {
+              return {
+                word,
+                position,
+                wordIsShown,
+              }
             }
-          } else {
-            return {
-              word,
-              position,
-              wordIsShown,
-            }
-          }
-        })
+          },
+        )
         this.renderText()
       }
 
