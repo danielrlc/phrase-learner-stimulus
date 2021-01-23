@@ -23,20 +23,16 @@
       buildWordsRegister() {
         this.wordsRegister = this.rawText.split(' ').map((word, position) => {
           let hint = ''
-          let blank = ''
           word.split('').map((letter, position) => {
             if (position === 0) {
               hint += letter
-              blank += '_'
             } else {
               hint += '_'
-              blank += '_'
             }
           })
           return {
             word,
             hint,
-            blank,
             position,
           }
         })
@@ -48,29 +44,7 @@
         )
       }
 
-      renderText() {
-        let renderedText = ''
-        this.wordsRegister.map(({ word, hint, blank, position }) => {
-          renderedText += `<span id="${position}" data-action="click->sentence#flipWordAndBuildText">${
-            this.wordsShownRegister[position]
-              ? word
-              : this.hintsAreShown
-              ? hint
-              : blank
-          }</span> `
-        })
-        this.textTarget.innerHTML = renderedText
-      }
-
-      flipAllWords() {
-        this.allWordsAreShown = !this.allWordsAreShown
-        this.wordsShownRegister = this.wordsShownRegister.map(
-          (wordIsShown) => this.allWordsAreShown,
-        )
-        this.renderText()
-      }
-
-      flipWordAndBuildText(event) {
+      flipWord(event) {
         const wordPosition = Number(event.target.id)
         this.wordsShownRegister = this.wordsShownRegister.map(
           (wordIsShown, position) => {
@@ -87,6 +61,28 @@
       flipHints() {
         this.hintsAreShown = !this.hintsAreShown
         this.renderText()
+      }
+
+      flipAllWords() {
+        this.allWordsAreShown = !this.allWordsAreShown
+        this.wordsShownRegister = this.wordsShownRegister.map(
+          (wordIsShown) => this.allWordsAreShown,
+        )
+        this.renderText()
+      }
+
+      renderText() {
+        let renderedText = ''
+        this.wordsRegister.map(({ word, hint, position }) => {
+          renderedText += `<span id="${position}" data-action="click->sentence#flipWord">${
+            this.wordsShownRegister[position]
+              ? word
+              : this.hintsAreShown
+              ? hint
+              : '____'
+          }</span> `
+        })
+        this.textTarget.innerHTML = renderedText
       }
     },
   )
