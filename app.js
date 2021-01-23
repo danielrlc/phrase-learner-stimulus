@@ -77,6 +77,9 @@
 
       flipAllWords() {
         this.allWordsAreShown = !this.allWordsAreShown
+        this.wordsShownRegister = this.wordsShownRegister.map(
+          (wordIsShown) => this.allWordsAreShown,
+        )
         this.buildText()
       }
 
@@ -108,6 +111,15 @@
                 position,
                 wordIsShown,
               }
+            }
+          },
+        )
+        this.wordsShownRegister = this.wordsShownRegister.map(
+          (wordIsShown, position) => {
+            if (position === wordPosition) {
+              return !wordIsShown
+            } else {
+              return wordIsShown
             }
           },
         )
