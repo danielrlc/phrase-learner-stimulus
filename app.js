@@ -5,12 +5,13 @@
     'sentence',
     class extends Stimulus.Controller {
       static get targets() {
-        return ['text']
+        return ['text', 'hintsButton', 'sentenceButton']
       }
 
       initialize() {
         this.buildWordsRegister()
         this.buildInitialWordsShownRegister()
+        this.prepareButtons()
         this.renderText()
       }
 
@@ -44,6 +45,15 @@
         )
       }
 
+      prepareButtons() {
+        this.hintsButtonTarget.textContent = this.hintsAreShown
+          ? 'Hide hints'
+          : 'Show hints'
+        this.sentenceButtonTarget.textContent = this.allWordsAreShown
+          ? 'Hide sentence'
+          : 'Show sentence'
+      }
+
       flipWord(event) {
         const wordPosition = Number(event.target.id)
         this.wordsShownRegister = this.wordsShownRegister.map(
@@ -55,11 +65,18 @@
             }
           },
         )
+        this.areAllWordsShown()
+        this.sentenceButtonTarget.textContent = this.allWordsAreShown
+          ? 'Hide sentence'
+          : 'Show sentence'
         this.renderText()
       }
 
       flipHints() {
         this.hintsAreShown = !this.hintsAreShown
+        this.hintsButtonTarget.textContent = this.hintsAreShown
+          ? 'Hide hints'
+          : 'Show hints'
         this.renderText()
       }
 
@@ -68,7 +85,27 @@
         this.wordsShownRegister = this.wordsShownRegister.map(
           (wordIsShown) => this.allWordsAreShown,
         )
+        this.sentenceButtonTarget.textContent = this.allWordsAreShown
+          ? 'Hide sentence'
+          : 'Show sentence'
+        this.areAllWordsShown()
         this.renderText()
+      }
+
+      areAllWordsShown() {
+        if (this.wordsShownRegister.includes(false)) {
+          this.allWordsAreShown = false
+          this.hintsButtonTarget.classList.remove(
+            'pointer-events-none',
+            'opacity-25',
+          )
+        } else {
+          this.allWordsAreShown = true
+          this.hintsButtonTarget.classList.add(
+            'pointer-events-none',
+            'opacity-25',
+          )
+        }
       }
 
       renderText() {
