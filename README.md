@@ -1,10 +1,18 @@
 # Project documentation
 
 ---
+
 title: tec-stimulus
 starting date: 2021-01-20
 tags: #stimulus, #tailwind, #hotwire
+
 ---
+
+## Todos
+
+- [ ] Only update single <span> if flipping just one word.
+- [ ] Learn a whole dialogue at once, not a single sentence.
+- [ ] Complete project documentation.
 
 ## Introduction
 

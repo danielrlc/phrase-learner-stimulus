@@ -85,19 +85,30 @@
         }
       }
 
+      removeAllChildNodes(parent) {
+        while (parent.firstChild) {
+          parent.removeChild(parent.firstChild)
+        }
+      }
+
       renderText() {
-        let renderedText = ''
-        const blank = '____'
+        this.removeAllChildNodes(this.textTarget)
         this.wordsStore.map(({ word, hint, position }) => {
-          renderedText += `<span id="${position}" data-action="click->sentence#flipWord">${
-            this.wordsShownStore[position]
-              ? word
-              : this.hintsAreShown
-              ? hint
-              : blank
-          }</span> `
+          const wordIsShown = this.wordsShownStore[position]
+          const blank = '____'
+          const wordElement = document.createElement('span')
+          wordElement.id = position
+          wordElement.setAttribute('data-action', 'click->sentence#flipWord')
+          wordElement.textContent = wordIsShown
+            ? word
+            : this.hintsAreShown
+            ? hint
+            : blank
+          const spaceBetweenWordsElement = document.createElement('span')
+          spaceBetweenWordsElement.textContent = ' '
+          this.textTarget.appendChild(wordElement)
+          this.textTarget.appendChild(spaceBetweenWordsElement)
         })
-        this.textTarget.innerHTML = renderedText
       }
 
       renderButtons() {
