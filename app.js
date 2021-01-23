@@ -11,19 +11,17 @@
       initialize() {
         this.buildWordsRegister()
         this.buildInitialWordsShownRegister()
-        this.buildText()
+        this.renderText()
       }
 
       rawText = 'The small boys came early to the hanging.'
-      renderedText = ''
-      textWords = []
       wordsRegister = []
       wordsShownRegister = []
       allWordsAreShown = false
       hintsAreShown = true
 
       buildWordsRegister() {
-        this.wordsRegister = this.rawText.split(' ').map((word) => {
+        this.wordsRegister = this.rawText.split(' ').map((word, position) => {
           let hint = ''
           let blank = ''
           word.split('').map((letter, position) => {
@@ -39,6 +37,7 @@
             word,
             hint,
             blank,
+            position,
           }
         })
       }
@@ -50,29 +49,17 @@
       }
 
       renderText() {
-        this.renderedText = ''
-        this.textWords.map(({ word, position, wordIsShown }) => {
-          let hint = ''
-          let blank = ''
-          if (this.hintsAreShown) {
-            word.split('').map((letter, position) => {
-              if (position === 0) {
-                hint += letter
-                blank += '_'
-              } else {
-                hint += '_'
-                blank += '_'
-              }
-            })
-          } else {
-            hint += `${word[0]}___`
-            blank += '____'
-          }
-          this.renderedText += `<span id="${position}" data-action="click->sentence#flipWordAndBuildText">${
-            wordIsShown ? word : this.hintsAreShown ? hint : blank
+        let renderedText = ''
+        this.wordsRegister.map(({ word, hint, blank, position }) => {
+          renderedText += `<span id="${position}" data-action="click->sentence#flipWordAndBuildText">${
+            this.wordsShownRegister[position]
+              ? word
+              : this.hintsAreShown
+              ? hint
+              : blank
           }</span> `
         })
-        this.textTarget.innerHTML = this.renderedText
+        this.textTarget.innerHTML = renderedText
       }
 
       flipAllWords() {
@@ -80,40 +67,11 @@
         this.wordsShownRegister = this.wordsShownRegister.map(
           (wordIsShown) => this.allWordsAreShown,
         )
-        this.buildText()
-      }
-
-      buildText() {
-        this.textWords = []
-        this.rawText.split(' ').map((word, position) => {
-          this.textWords = this.textWords.concat({
-            word,
-            position,
-            wordIsShown: this.allWordsAreShown,
-          })
-        })
         this.renderText()
       }
 
       flipWordAndBuildText(event) {
         const wordPosition = Number(event.target.id)
-        this.textWords = this.textWords.map(
-          ({ word, position, wordIsShown }) => {
-            if (position === wordPosition) {
-              return {
-                word,
-                position,
-                wordIsShown: !wordIsShown,
-              }
-            } else {
-              return {
-                word,
-                position,
-                wordIsShown,
-              }
-            }
-          },
-        )
         this.wordsShownRegister = this.wordsShownRegister.map(
           (wordIsShown, position) => {
             if (position === wordPosition) {
