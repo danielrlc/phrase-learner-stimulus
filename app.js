@@ -9,20 +9,19 @@
       }
 
       initialize() {
-        this.buildWordsRegister()
-        this.buildInitialWordsShownRegister()
-        this.prepareButtons()
-        this.renderText()
+        this.buildWordsStore()
+        this.buildWordsShownStore()
+        this.renderView()
       }
 
       rawText = 'The small boys came early to the hanging.'
-      wordsRegister = []
-      wordsShownRegister = []
+      wordsStore = []
+      wordsShownStore = []
       allWordsAreShown = false
       hintsAreShown = true
 
-      buildWordsRegister() {
-        this.wordsRegister = this.rawText.split(' ').map((word, position) => {
+      buildWordsStore() {
+        this.wordsStore = this.rawText.split(' ').map((word, position) => {
           let hint = ''
           word.split('').map((letter, position) => {
             if (position === 0) {
@@ -39,24 +38,15 @@
         })
       }
 
-      buildInitialWordsShownRegister() {
-        this.wordsShownRegister = Array(this.wordsRegister.length).fill(
+      buildWordsShownStore() {
+        this.wordsShownStore = Array(this.wordsStore.length).fill(
           this.allWordsAreShown,
         )
       }
 
-      prepareButtons() {
-        this.hintsButtonTarget.textContent = this.hintsAreShown
-          ? 'Hide hints'
-          : 'Show hints'
-        this.sentenceButtonTarget.textContent = this.allWordsAreShown
-          ? 'Hide sentence'
-          : 'Show sentence'
-      }
-
       flipWord(event) {
         const wordPosition = Number(event.target.id)
-        this.wordsShownRegister = this.wordsShownRegister.map(
+        this.wordsShownStore = this.wordsShownStore.map(
           (wordIsShown, position) => {
             if (position === wordPosition) {
               return !wordIsShown
@@ -65,61 +55,69 @@
             }
           },
         )
-        this.areAllWordsShown()
-        this.sentenceButtonTarget.textContent = this.allWordsAreShown
-          ? 'Hide sentence'
-          : 'Show sentence'
-        this.renderText()
+        this.renderView()
       }
 
       flipHints() {
         this.hintsAreShown = !this.hintsAreShown
-        this.hintsButtonTarget.textContent = this.hintsAreShown
-          ? 'Hide hints'
-          : 'Show hints'
-        this.renderText()
+        this.renderView()
       }
 
       flipAllWords() {
         this.allWordsAreShown = !this.allWordsAreShown
-        this.wordsShownRegister = this.wordsShownRegister.map(
+        this.wordsShownStore = this.wordsShownStore.map(
           (wordIsShown) => this.allWordsAreShown,
         )
-        this.sentenceButtonTarget.textContent = this.allWordsAreShown
-          ? 'Hide sentence'
-          : 'Show sentence'
-        this.areAllWordsShown()
-        this.renderText()
+        this.renderView()
       }
 
-      areAllWordsShown() {
-        if (this.wordsShownRegister.includes(false)) {
+      renderView() {
+        this.checkIfAllWordsAreShown()
+        this.renderText()
+        this.renderButtons()
+      }
+
+      checkIfAllWordsAreShown() {
+        if (this.wordsShownStore.includes(false)) {
           this.allWordsAreShown = false
-          this.hintsButtonTarget.classList.remove(
-            'pointer-events-none',
-            'opacity-25',
-          )
         } else {
           this.allWordsAreShown = true
-          this.hintsButtonTarget.classList.add(
-            'pointer-events-none',
-            'opacity-25',
-          )
         }
       }
 
       renderText() {
         let renderedText = ''
-        this.wordsRegister.map(({ word, hint, position }) => {
+        const blank = '____'
+        this.wordsStore.map(({ word, hint, position }) => {
           renderedText += `<span id="${position}" data-action="click->sentence#flipWord">${
-            this.wordsShownRegister[position]
+            this.wordsShownStore[position]
               ? word
               : this.hintsAreShown
               ? hint
-              : '____'
+              : blank
           }</span> `
         })
         this.textTarget.innerHTML = renderedText
+      }
+
+      renderButtons() {
+        if (this.allWordsAreShown) {
+          this.hintsButtonTarget.classList.add(
+            'pointer-events-none',
+            'opacity-25',
+          )
+        } else {
+          this.hintsButtonTarget.classList.remove(
+            'pointer-events-none',
+            'opacity-25',
+          )
+        }
+        this.hintsButtonTarget.textContent = this.hintsAreShown
+          ? 'Hide hints'
+          : 'Show hints'
+        this.sentenceButtonTarget.textContent = this.allWordsAreShown
+          ? 'Hide sentence'
+          : 'Show sentence'
       }
     },
   )
