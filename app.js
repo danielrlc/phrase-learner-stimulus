@@ -9,14 +9,45 @@
       }
 
       initialize() {
+        this.buildWordsRegister()
+        this.buildInitialWordsShownRegister()
         this.buildText()
       }
 
       rawText = 'The small boys came early to the hanging.'
       renderedText = ''
       textWords = []
+      wordsRegister = []
+      wordsShownRegister = []
       allWordsAreShown = false
       hintsAreShown = true
+
+      buildWordsRegister() {
+        this.wordsRegister = this.rawText.split(' ').map((word) => {
+          let hint = ''
+          let blank = ''
+          word.split('').map((letter, position) => {
+            if (position === 0) {
+              hint += letter
+              blank += '_'
+            } else {
+              hint += '_'
+              blank += '_'
+            }
+          })
+          return {
+            word,
+            hint,
+            blank,
+          }
+        })
+      }
+
+      buildInitialWordsShownRegister() {
+        this.wordsShownRegister = Array(this.wordsRegister.length).fill(
+          this.allWordsAreShown,
+        )
+      }
 
       renderText() {
         this.renderedText = ''
