@@ -2,10 +2,10 @@
   const application = Stimulus.Application.start()
 
   application.register(
-    'phrase-flipper',
+    'phrase-flip-exercise',
     class extends Stimulus.Controller {
       static get targets() {
-        return ['text', 'hintsButton', 'sentenceButton']
+        return ['phraseText', 'flipHintsButton', 'flipPhraseButton']
       }
 
       initialize() {
@@ -14,26 +14,28 @@
         this.renderView()
       }
 
-      rawText = 'The small boys came early to the hanging.'
+      rawPhraseText = 'The small boys came early to the hanging.'
       wordsStore = []
       wordsShownStore = []
       allWordsAreShown = false
       hintsAreShown = true
 
       buildWordsStore() {
-        this.wordsStore = this.rawText.split(' ').map((word, position) => {
-          let hint = ''
-          word
-            .split('')
-            .map((letter, position) =>
-              position === 0 ? (hint += letter) : (hint += '_'),
-            )
-          return {
-            word,
-            hint,
-            position,
-          }
-        })
+        this.wordsStore = this.rawPhraseText
+          .split(' ')
+          .map((word, position) => {
+            let hint = ''
+            word
+              .split('')
+              .map((letter, position) =>
+                position === 0 ? (hint += letter) : (hint += '_'),
+              )
+            return {
+              word,
+              hint,
+              position,
+            }
+          })
       }
 
       buildWordsShownStore() {
@@ -90,13 +92,16 @@
       }
 
       renderText() {
-        this.removeAllChildNodes(this.textTarget)
+        this.removeAllChildNodes(this.phraseTextTarget)
         this.wordsStore.map(({ word, hint, position }) => {
           const wordIsShown = this.wordsShownStore[position]
           const blank = '____'
           const wordElement = document.createElement('span')
           wordElement.id = position
-          wordElement.setAttribute('data-action', 'click->phrase-flipper#flipWord')
+          wordElement.setAttribute(
+            'data-action',
+            'click->phrase-flip-exercise#flipWord',
+          )
           wordElement.textContent = wordIsShown
             ? word
             : this.hintsAreShown
@@ -104,29 +109,29 @@
             : blank
           const spaceBetweenWordsElement = document.createElement('span')
           spaceBetweenWordsElement.textContent = ' '
-          this.textTarget.appendChild(wordElement)
-          this.textTarget.appendChild(spaceBetweenWordsElement)
+          this.phraseTextTarget.appendChild(wordElement)
+          this.phraseTextTarget.appendChild(spaceBetweenWordsElement)
         })
       }
 
       renderButtons() {
         if (this.allWordsAreShown) {
-          this.hintsButtonTarget.classList.add(
+          this.flipHintsButtonTarget.classList.add(
             'pointer-events-none',
             'opacity-25',
           )
         } else {
-          this.hintsButtonTarget.classList.remove(
+          this.flipHintsButtonTarget.classList.remove(
             'pointer-events-none',
             'opacity-25',
           )
         }
-        this.hintsButtonTarget.textContent = this.hintsAreShown
+        this.flipHintsButtonTarget.textContent = this.hintsAreShown
           ? 'Hide hints'
           : 'Show hints'
-        this.sentenceButtonTarget.textContent = this.allWordsAreShown
-          ? 'Hide sentence'
-          : 'Show sentence'
+        this.flipPhraseButtonTarget.textContent = this.allWordsAreShown
+          ? 'Hide phrase'
+          : 'Show phrase'
       }
     },
   )

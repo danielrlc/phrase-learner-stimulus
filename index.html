@@ -1,38 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>TEC (Stimulus)</title>
-    <link
-      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
-      rel="stylesheet"
-    />
-    <script src="https://unpkg.com/stimulus@2.0.0/dist/stimulus.umd.js"></script>
-    <script src="app.js"></script>
-  </head>
-  <body
-    class="font-mono px-4 lg:px-0 py-1 max-w-2xl mx-auto text-lg lg:text-xl"
-  >
-    <p class="font-bold text-center mb-4">TEC (Stimulus)</p>
-    <section data-controller="phrase-flipper">
-      <p class="mb-6" data-phrase-flipper-target="text"></p>
-      <div class="-mx-1">
-        <button
-          data-phrase-flipper-target="hintsButton"
-          class="text-sm px-3 py-1 mx-1 my-2 bg-gray-200 hover:bg-gray-300 rounded"
-          data-action="click->phrase-flipper#flipHints"
-        >
-          flip hints
-        </button>
-        <button
-          data-phrase-flipper-target="sentenceButton"
-          class="text-sm px-3 py-1 mx-1 my-2 bg-gray-200 hover:bg-gray-300 rounded"
-          data-action="click->phrase-flipper#flipAllWords"
-        >
-          flip sentence
-        </button>
-      </div>
-    </section>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>TEC (Stimulus)</title>
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="https://unpkg.com/stimulus@2.0.0/dist/stimulus.umd.js"></script>
+  <script src="app.js"></script>
+</head>
+
+<body class="font-mono px-4 lg:px-0 py-1 max-w-2xl mx-auto text-lg lg:text-xl">
+  <p class="font-bold text-center mb-4">TEC (Stimulus)</p>
+  <section data-controller="phrase-flip-exercise">
+    <p class="mb-6" data-phrase-flip-exercise-target="phraseText"></p>
+    <div class="-mx-1">
+      <button data-phrase-flip-exercise-target="flipHintsButton"
+        class="text-sm px-3 py-1 mx-1 my-2 bg-gray-200 hover:bg-gray-300 rounded"
+        data-action="click->phrase-flip-exercise#flipHints"></button>
+      <button data-phrase-flip-exercise-target="flipPhraseButton"
+        class="text-sm px-3 py-1 mx-1 my-2 bg-gray-200 hover:bg-gray-300 rounded"
+        data-action="click->phrase-flip-exercise#flipAllWords"></button>
+    </div>
+  </section>
+</body>
+
 </html>
