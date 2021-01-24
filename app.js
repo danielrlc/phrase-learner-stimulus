@@ -23,13 +23,11 @@
       buildWordsStore() {
         this.wordsStore = this.rawText.split(' ').map((word, position) => {
           let hint = ''
-          word.split('').map((letter, position) => {
-            if (position === 0) {
-              hint += letter
-            } else {
-              hint += '_'
-            }
-          })
+          word
+            .split('')
+            .map((letter, position) =>
+              position === 0 ? (hint += letter) : (hint += '_'),
+            )
           return {
             word,
             hint,
