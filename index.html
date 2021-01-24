@@ -15,20 +15,20 @@
     class="font-mono px-4 lg:px-0 py-1 max-w-2xl mx-auto text-lg lg:text-xl"
   >
     <p class="font-bold text-center mb-4">TEC (Stimulus)</p>
-    <section data-controller="sentence">
-      <p class="mb-6" data-sentence-target="text"></p>
+    <section data-controller="phrase-flipper">
+      <p class="mb-6" data-phrase-flipper-target="text"></p>
       <div class="-mx-1">
         <button
-          data-sentence-target="hintsButton"
+          data-phrase-flipper-target="hintsButton"
           class="text-sm px-3 py-1 mx-1 my-2 bg-gray-200 hover:bg-gray-300 rounded"
-          data-action="click->sentence#flipHints"
+          data-action="click->phrase-flipper#flipHints"
         >
           flip hints
         </button>
         <button
-          data-sentence-target="sentenceButton"
+          data-phrase-flipper-target="sentenceButton"
           class="text-sm px-3 py-1 mx-1 my-2 bg-gray-200 hover:bg-gray-300 rounded"
-          data-action="click->sentence#flipAllWords"
+          data-action="click->phrase-flipper#flipAllWords"
         >
           flip sentence
         </button>

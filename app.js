@@ -2,7 +2,7 @@
   const application = Stimulus.Application.start()
 
   application.register(
-    'sentence',
+    'phrase-flipper',
     class extends Stimulus.Controller {
       static get targets() {
         return ['text', 'hintsButton', 'sentenceButton']
@@ -96,7 +96,7 @@
           const blank = '____'
           const wordElement = document.createElement('span')
           wordElement.id = position
-          wordElement.setAttribute('data-action', 'click->sentence#flipWord')
+          wordElement.setAttribute('data-action', 'click->phrase-flipper#flipWord')
           wordElement.textContent = wordIsShown
             ? word
             : this.hintsAreShown
